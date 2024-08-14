@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-const User = require('../models/user');
+const User = require('../models/user.model');
 const { signUpSchema } = require('../helper/validation');
 
 const signUp = async (req, res) => {
