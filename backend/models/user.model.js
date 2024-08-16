@@ -15,10 +15,9 @@ const userSchema = new mongoose.Schema({
     required: true
   },
   phone:{
-    type: String,
+    type: Number,
     required: true,
-    unique: true,
-    match: [/^\d{10}$/, 'Please enter a valid 10-digit phone number']
+    unique: true
   },
   hasWhatsapp:{
     type: Boolean,
