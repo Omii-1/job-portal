@@ -1,8 +1,8 @@
 const jwt = require("jsonwebtoken")
 require("dotenv").config()
 
-const generateTokenAndSetCookies = (userId, res) => {
-  const token = jwt.sign({userId}, process.env.JWT_SECRET,{
+const generateTokenAndSetCookies = (userId, role, res) => {
+  const token = jwt.sign({userId, role}, process.env.JWT_SECRET,{
     expiresIn: "15d"
   })
 

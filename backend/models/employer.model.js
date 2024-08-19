@@ -14,7 +14,7 @@ const employerSchema = new mongoose.Schema({
     required: true
   },
   phone:{
-    type: String,
+    type: Number,
     required: true,
     unique: true
   },
@@ -22,7 +22,7 @@ const employerSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
-  workemail:{
+  email:{
     type: String,
     unique: true,
     default: ""

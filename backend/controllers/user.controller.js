@@ -55,7 +55,7 @@ const userSignUp = async (req, res) => {
       await newUser.save()
 
       // generate token and set cookies
-      generateTokenAndSetCookies(newUser._id, res)
+      generateTokenAndSetCookies(newUser._id, newUser.role, res)
 
       // return success response
       return res.status(200).json({
@@ -97,7 +97,7 @@ const userSignIn = async (req, res) => {
       })
     }
 
-    generateTokenAndSetCookies(existingUser._id, res)
+    generateTokenAndSetCookies(existingUser._id, existingUser.role, res)
 
     return res.status(200).json({
       message: "User logged in Successfully",
@@ -131,16 +131,14 @@ const userLogout = async (req, res) => {
 // get user-details
 const userDetails = async (req, res) => {
   try{
+    
+    const userData = await User.findById(req.id).select("-password")
 
-    const user = req.user
-
-    if(!user){
+    if(!userData){
       return res.status(400).json({
         error: "User is not exist"
       })
     }
-
-    const userData = await User.findById(user._id).select("-password")
 
     return res.status(200).json({
       userInfo: userData
@@ -170,7 +168,13 @@ const userUpdate = async(req, res) => {
     const {fullname, oldPassword, newPassword, confirmNewPassword, phone} = validationResult.data
 
     
-    const user = req.user
+    const user = await User.findById(req.id)
+
+    if(!user){
+      return res.status(400).json({
+        error: "User not found"
+      })
+    }
     
     const prevPassword = await bcrypt.compare(oldPassword, user.password)
     
@@ -197,10 +201,7 @@ const userUpdate = async(req, res) => {
     })
 
     return res.status(200).json({
-      message: "Details updated successfully",
-      id: user._id,
-      fullname: user.fullname,
-      phone: user.phone
+      message: "User updated successfully"
     })
 
   } catch(err){

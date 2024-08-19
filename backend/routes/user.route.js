@@ -1,7 +1,7 @@
 const express = require('express');
 
 const {userSignUp, userSignIn, userLogout, userDetails, userUpdate} = require("../controllers/user.controller")
-const protectRoute  = require("../middlewares/protectUserRoute")
+const protectRoute  = require("../middlewares/protectRoute")
 
 const router = express.Router();
 

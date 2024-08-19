@@ -1,5 +1,7 @@
 const jwt = require("jsonwebtoken")
+
 const User = require("../models/user.model")
+const Employer = require("../models/employer.model")
 
 const protectRoute = async(req, res, next) => {
   try{
@@ -23,7 +25,12 @@ const protectRoute = async(req, res, next) => {
     }
 
     // get users data from decoded userID
-    const user = await User.findById(decode.userId)
+    let user;
+    if(decode.role == "user"){
+      user = await User.findById(decode.userId)
+    } else if (decode.role == "employer"){
+      user = await Employer.findById(decode.userId)
+    }
 
     if(!user){
       return res.status(401).json({
@@ -32,7 +39,7 @@ const protectRoute = async(req, res, next) => {
     }
 
     // RETRUN THE USER
-    req.user = user
+    req.id = user._id
 
     next()
 
